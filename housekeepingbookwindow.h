@@ -6,6 +6,7 @@
 class QGroupBox;
 class QTreeView;
 class QSqlRelationalTableModel;
+class PieView;
 
 class HousekeepingBookWindow : public QMainWindow
 {
@@ -16,15 +17,20 @@ public:
 
 private slots:
 
-//    void addUmsatz();
+    void addUmsatz();
 
 private:
 
     QGroupBox* createUmsatzBox();
     QGroupBox* createShowBox();
+    void createMenuBar();
 
+    QAction *addUmsatzAction;
     QTreeView *umsatzView;
+    PieView *pieChart;
     QSqlRelationalTableModel *model;
+
+
 };
 
 #endif // MAINWINDOW_H

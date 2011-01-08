@@ -11,9 +11,17 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-           housekeepingbookwindow.cpp
+           housekeepingbookwindow.cpp \
+    addumsatzdialog.cpp \
+    pieview.cpp \
+    viewproxymodel.cpp \
+    treeproxymodel.cpp
 
 HEADERS  += housekeepingbookwindow.h \
-            datenbank.h
+            datenbank.h \
+    addumsatzdialog.h \
+    pieview.h \
+    viewproxymodel.h \
+    treeproxymodel.h
 
 FORMS    +=
