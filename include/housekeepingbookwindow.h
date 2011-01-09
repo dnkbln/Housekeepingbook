@@ -7,6 +7,7 @@ class QGroupBox;
 class QTreeView;
 class QSqlRelationalTableModel;
 class PieView;
+class TreeProxyModel;
 
 class HousekeepingBookWindow : public QMainWindow
 {
@@ -29,7 +30,7 @@ private:
     QTreeView *umsatzView;
     PieView *pieChart;
     QSqlRelationalTableModel *model;
-
+    TreeProxyModel *treeModel;
 
 };
 

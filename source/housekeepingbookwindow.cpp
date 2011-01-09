@@ -1,6 +1,7 @@
 #include "housekeepingbookwindow.h"
 #include "addumsatzdialog.h"
 #include "pieview.h"
+#include "treeproxymodel.h"
 
 #include <QtGui>
 #include <QtSql>
@@ -14,6 +15,7 @@ HousekeepingBookWindow::HousekeepingBookWindow(QWidget *parent) :
     model->setRelation(4, QSqlRelation("kategorie", "id", "kurzinfo"));
     model->setRelation(5, QSqlRelation("zahlart", "id", "kurzinfo"));
     model->select();
+    model->setSort(1, Qt::AscendingOrder);
 
     QGroupBox* umsatz = createUmsatzBox();
     pieChart = new PieView;
@@ -37,11 +39,9 @@ QGroupBox* HousekeepingBookWindow::createUmsatzBox()
     QGroupBox* box = new QGroupBox("Umsatz");
 
     umsatzView = new QTreeView;
-    umsatzView->setModel(model);
-    umsatzView->setSortingEnabled(true);
-    umsatzView->setColumnHidden(0, true);
-    umsatzView->sortByColumn(1);
-    umsatzView->setContextMenuPolicy(Qt::ActionsContextMenu);
+
+    treeModel = new TreeProxyModel(model, this);
+    umsatzView->setModel(treeModel);
 
     addUmsatzAction = new QAction("Füge Umsatz hinzu", this);
     umsatzView->addAction(addUmsatzAction);

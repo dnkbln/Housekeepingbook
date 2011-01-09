@@ -26,3 +26,7 @@ HEADERS  += include/housekeepingbookwindow.h \
             include/treeproxymodel.h
 
 FORMS    +=
+
+OTHER_FILES += \
+    README.txt \
+    ToDo.txt

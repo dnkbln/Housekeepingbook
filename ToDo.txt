@@ -1,0 +1,9 @@
+
+
+Symbolische Spaltennamen
+========================
+
+Die Spalten der Datenbank-Tabellen sollten nicht direkt im source-Code
+verwendet werden. Es sollten symbolische Namen verwendet werden. Dies
+muss noch umgebaut werden.
+
