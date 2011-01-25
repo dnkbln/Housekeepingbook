@@ -5,7 +5,7 @@
 
 class QGroupBox;
 class QTreeView;
-class QSqlRelationalTableModel;
+class MySqlRelationalTableModel;
 class PieView;
 class TreeProxyModel;
 
@@ -29,7 +29,7 @@ private:
     QAction *addUmsatzAction;
     QTreeView *umsatzView;
     PieView *pieChart;
-    QSqlRelationalTableModel *model;
+    MySqlRelationalTableModel *model;
     TreeProxyModel *treeModel;
 
 };

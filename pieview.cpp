@@ -344,8 +344,8 @@ void PieView::paintEvent(QPaintEvent *event)
                 double angle = 360*value/totalValue;
 
                 QModelIndex colorIndex = model()->index(row, 0, rootIndex());
-                QColor color = QColor(model()->data(colorIndex,
-                                Qt::DecorationRole).toString());
+                int id = model()->data(colorIndex).toInt();
+                QColor color = QColor((id*100)% 255, (row*100)%255, ((int)(value*10))% 255);
 
                 if (currentIndex() == index)
                     painter.setBrush(QBrush(color, Qt::Dense4Pattern));
@@ -370,7 +370,7 @@ void PieView::paintEvent(QPaintEvent *event)
             double value = model()->data(index).toDouble();
 
             if (value > 0.0) {
-                QModelIndex labelIndex = model()->index(row, 0, rootIndex());
+                QModelIndex labelIndex = model()->index(row, 2, rootIndex());
 
                 QStyleOptionViewItem option = viewOptions();
                 option.rect = visualRect(labelIndex);

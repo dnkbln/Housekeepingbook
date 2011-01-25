@@ -6,7 +6,58 @@ TreeProxyModel::TreeProxyModel(QAbstractItemModel* sourceModel, QObject *parent)
     QAbstractProxyModel(parent)
 {
     setSourceModel(sourceModel);
+}
+
+void TreeProxyModel::setSourceModel(QAbstractItemModel* model)
+{
+    if (sourceModel()) {
+        disconnect(sourceModel(), SIGNAL(modelReset()), this, SLOT(sourceReset()));
+        disconnect(sourceModel(), SIGNAL(rowsInserted(QModelIndex, int, int)),
+                   this, SLOT(sourceRowsInserted(QModelIndex,int,int)));
+        disconnect(sourceModel(), SIGNAL(rowsRemoved(QModelIndex, int, int)),
+                   this, SLOT(sourceRowsRemoved(QModelIndex,int,int)));
+    }
+
+    QAbstractProxyModel::setSourceModel(model);
+
+    if (model) {
+        connect(sourceModel(), SIGNAL(modelReset()), this, SLOT(sourceReset()));
+        connect(sourceModel(), SIGNAL(rowsInserted(QModelIndex, int, int)),
+                this, SLOT(sourceRowsInserted(QModelIndex,int,int)));
+        connect(sourceModel(), SIGNAL(rowsRemoved(QModelIndex, int, int)),
+                this, SLOT(sourceRowsRemoved(QModelIndex,int,int)));
+    }
     reset();
+}
+
+QVariant TreeProxyModel::data(const QModelIndex &proxyIndex, int role) const
+{
+    if ((role == Qt::EditRole || role == Qt::DisplayRole)) {
+        int start = proxyIndex.internalId();
+        if (start == 0) {
+            int offset = sourceDateRow(proxyIndex.row());
+            if (proxyIndex.column() == 1) {
+
+                QModelIndex idx = sourceModel()->index(offset, 1);
+                QDate date = idx.data().toDate();
+                return date.toString();
+            }
+            if (proxyIndex.column() == 2) {
+
+                double value = 0.0;
+                if (proxyIndex.isValid()) {
+                    int startIdx = sourceDateRow(proxyIndex.row());
+                    int endIdx = sourceDateRow(proxyIndex.row()+1);
+                    for (int i=startIdx; i<endIdx; ++i) {
+                        value += sourceModel()->index(i, 2).data().toDouble();
+                    }
+                }
+                return " Summe: " + QString::number(value);
+            }
+        }
+    }
+
+    return QAbstractProxyModel::data(proxyIndex, role);
 }
 
 int TreeProxyModel::columnCount(const QModelIndex &parent) const
@@ -28,8 +79,13 @@ int TreeProxyModel::rowCount(const QModelIndex &parent) const
         int sourceRows = sourceModel()->rowCount();
 
         for (int i = 0; i < sourceRows; ++i) {
+            /*
+            The new model change the type automatic.
+
             QString rowDateString = sourceModel()->index(i, 1).data().toString();
             QDate rowDate = QDate::fromString(rowDateString);
+            */
+            QDate rowDate = sourceModel()->index(i, 1).data().toDate();
             if (rowDate != currentDate) {
                 sourceRowCache.append(i);
                 currentDate = rowDate;
@@ -116,3 +172,20 @@ QModelIndex TreeProxyModel::mapFromSource(const QModelIndex &sourceIndex) const
     return createIndex(row, sourceIndex.column(), dateRow + 1);
 }
 
+void TreeProxyModel::sourceReset()
+{
+    sourceRowCache.clear();
+    reset();
+}
+
+void TreeProxyModel::sourceRowsInserted(const QModelIndex &parent, int start, int end)
+{
+    sourceRowCache.clear();
+    reset();
+}
+
+void TreeProxyModel::sourceRowsRemoved(const QModelIndex &parent, int start, int end)
+{
+    sourceRowCache.clear();
+    reset();
+}

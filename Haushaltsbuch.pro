@@ -9,21 +9,21 @@ QT       += core gui sql
 TARGET = Haushaltsbuch
 TEMPLATE = app
 
-INCLUDEPATH = ./include
+SOURCES += main.cpp\
+           housekeepingbookwindow.cpp \
+           addumsatzdialog.cpp \
+           pieview.cpp \
+           viewproxymodel.cpp \
+           treeproxymodel.cpp \
+           mysqlrelationaltablemodel.cpp
 
-SOURCES += source/main.cpp\
-           source/housekeepingbookwindow.cpp \
-           source/addumsatzdialog.cpp \
-           source/pieview.cpp \
-           source/viewproxymodel.cpp \
-           source/treeproxymodel.cpp
-
-HEADERS  += include/housekeepingbookwindow.h \
-            include/datenbank.h \
-            include/addumsatzdialog.h \
-            include/pieview.h \
-            include/viewproxymodel.h \
-            include/treeproxymodel.h
+HEADERS  += housekeepingbookwindow.h \
+            datenbank.h \
+            addumsatzdialog.h \
+            pieview.h \
+            viewproxymodel.h \
+            treeproxymodel.h \
+            mysqlrelationaltablemodel.h
 
 FORMS    +=
 

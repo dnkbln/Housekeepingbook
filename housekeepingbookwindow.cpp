@@ -2,6 +2,7 @@
 #include "addumsatzdialog.h"
 #include "pieview.h"
 #include "treeproxymodel.h"
+#include "mysqlrelationaltablemodel.h"
 
 #include <QtGui>
 #include <QtSql>
@@ -9,13 +10,13 @@
 HousekeepingBookWindow::HousekeepingBookWindow(QWidget *parent) :
     QMainWindow(parent)
 {
-    model = new QSqlRelationalTableModel(this);
+    model = new MySqlRelationalTableModel(this);
     model->setTable("umsatz");
+    model->setSort(1, Qt::AscendingOrder);
     model->setRelation(3, QSqlRelation("waehrung", "id", "zeichen"));
     model->setRelation(4, QSqlRelation("kategorie", "id", "kurzinfo"));
     model->setRelation(5, QSqlRelation("zahlart", "id", "kurzinfo"));
     model->select();
-    model->setSort(1, Qt::AscendingOrder);
 
     QGroupBox* umsatz = createUmsatzBox();
     pieChart = new PieView;

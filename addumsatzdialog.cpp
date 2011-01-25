@@ -33,7 +33,8 @@ void AddUmsatzDialog::submit()
     }
     else {
         addUmsatz();
-        accept();
+        betragEdit->clear();
+        //accept();
     }
 }
 
@@ -116,7 +117,7 @@ void AddUmsatzDialog::addUmsatz()
     QSqlField zahlart("zahlartid", QVariant::Int);
     QSqlField bemerkung("bemerkung", QVariant::String);
 
-    datum.setValue(QVariant(dateEdit->date().toString()));
+    datum.setValue(QVariant(dateEdit->date()));
     betrag.setValue(QVariant(betragEdit->text().toDouble()));
     waehrung.setValue(QVariant(waehrungEdit->currentIndex()+1));
     kategorie.setValue(QVariant(kategorieEdit->currentIndex()+1));
